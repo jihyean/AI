@@ -1,0 +1,95 @@
+오전 10:40 2022-10-28
+opencv는 교재에 없느데 넣음
+지능 에이전트 좀 많이 넣음
+고급 인터페이스를 가진 고급 에이전트
+
+opencv는 공개된소스, 무료, ㄹ;눅스와 같은 종류
+opencv 어디에 쓰냐? 
+카메라, 비디오 영상처리+ 기계학습
+
+교육용, 상업용으로 다 무료
+모든언어 다 쓸 수 있음
+플랫폼도 다양
+최적화도 되어있음
+15만명 사용
+함수들의 집합이라고 생각
+
+cv2.imread(filename, flags=None) -> retval
+이미지 읽어옴
+상대, 절대 경로 가능
+flags: 영상 불러오는 옵션 태그
+COLOR
+GRAYSCALE
+UNCHANGED
+리턴 값은 array로
+
+cv2.imwrite
+파일 저장
+반환은 True False
+
+cv2.namedWindow
+cv2.WINDOW_NORMAL > 창에 영상을 맞춤
+cv2.WINDOW_AUTOSIZE 영상을 창에 맞춤
+cv2.destroyWindow
+cv2.destroyAllWindow
+창 띄우기 닫기
+
+창 위치 크기 지정
+
+cv2.waitKey
+영상 출력
+너무 빨리 출력되면 인간눈에 안보여서 기다렸다가 출력
+특정 키를 눌렀을때 닫히거나 하는 동작 가능
+
+cv2.imread는 RGB가 아니라 BGR로 함
+
+matplotlib 패키지
+
+여기까지 정지영상
+
+카메라: 실시간
+동영상: 다운 받아 놓은 것
+cv2.VideoCapture 클래스
+
+cv2.VideoCapture
+cv2.VideoCapture.open
+cv2.VideoCapture.isOpened 열 준비가 되어 있는지?
+cv2.VideoCapture.read 프레임 받아오기****
+cv2.VideoCapture.open 프레임 받아오기****
+cv2.VideoCapture.get 비디오 장치 속성값 참조
+프레임 가로, 세로, 수, 확대축소, 노출 등등
+cv2.VideoCapture.set 위의 값 설정 가능
+
+창이 없으면 자동으로 만들음(AUTOMIZ)
+
+비디오를 캡쳐해서 읽은 다음 처리
+
+cv2.Canny 알아봄
+
+동영상파일 읽어오기
+프레임카운트 = 1초에 몇장 보여줄건지
+
+fps 중요
+
+##강의
+이미 있는 모델과 구성 cgg, 가중치 weight 를 가져온것
+모델이 다 있다는 전제하에 shell 을 만듦
+
+음성합성을 이용(눈+입)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

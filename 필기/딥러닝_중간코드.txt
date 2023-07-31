@@ -1,0 +1,362 @@
+# 9월 2일 -1주차
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train = x_train.reshape(60000, 784)
+x_test = x_test.reshape(10000, 784)
+x_train = x_train.astype(np.float32)/255.0
+x_test = x_test.astype(np.float32)/255.0
+y_train = tf.keras.utils.to_categorical(y_train,10)
+y_test = tf.keras.utils.to_categorical(y_test, 10)
+
+n_input = 784
+n_hidden1 = 1024
+n_hidden2 = 512
+n_hidden3 = 512
+n_hidden4 = 512
+n_output = 10
+
+mlp = Sequential()
+mlp.add(Dense(units=n_hidden1,activation='tanh', input_shape=(n_input,),
+              kernel_initializer='random_uniform',bias_initializer='zeros'))
+mlp.add(Dense(units=n_hidden2, activation='tanh',
+              kernel_initializer='random_uniform',bias_initializer='zeros'))
+mlp.add(Dense(units=n_hidden3, activation='tanh',
+              kernel_initializer='random_uniform',bias_initializer='zeros'))
+mlp.add(Dense(units=n_hidden4, activation='tanh',
+              kernel_initializer='random_uniform',bias_initializer='zeros'))
+mlp.add(Dense(units=n_output, activation='tanh',
+              kernel_initializer='random_uniform',bias_initializer='zeros'))
+
+mlp.compile(loss='mean_squared_error',
+            optimizer=Adam(learning_rate=0.001),metrics=['accuracy'])
+hist = mlp.fit(x_train, y_train, batch_size=128, epochs=30,
+               validation_data=(x_test, y_test), verbose=2)
+
+res=mlp.evaluate(x_test, y_test, verbose=0)
+print("정확률은", res[1]*100)
+
+import matplotlib.pyplot as plt
+
+plt.plot(hist.history['accuracy'])
+plt.plot(hist.history['val_accuracy'])
+plt.title('Model accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train','Validation'], loc='upper left')
+plt.grid()
+plt.show()
+
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper right')
+plt.grid()
+plt.show()
+
+# 9월 16일 - 딥러닝 3주차
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
+
+# MNIST 읽어 와서 신경망에 입력할 형태로 변환
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train = x_train.reshape(60000, 784)   #텐서 모양 변화
+x_test = x_test.reshape(10000, 784)
+x_train = x_train.astype(np.float32)/255.0  #ndarray로 변환
+x_test = x_test.astype(np.float32)/255.0
+y_train = tf.keras.utils.to_categorical(y_train,10)
+y_test = tf.keras.utils.to_categorical(y_test,10)
+
+#신경망 구조 설정
+n_input=784
+n_hidden1=1024
+n_hidden2=512
+n_hidden3=512
+n_hidden4=512
+n_output=10
+
+# 평균 제곱오차를 사용한 모델
+dmlp_mse = Sequential()
+dmlp_mse.add(Dense(units= n_hidden1, activation='tanh', input_shape=(n_input,)))
+dmlp_mse.add(Dense(units= n_hidden2, activation='tanh'))
+dmlp_mse.add(Dense(units= n_hidden3, activation='tanh'))
+dmlp_mse.add(Dense(units= n_hidden4, activation='tanh'))
+dmlp_mse.add(Dense(units= n_output, activation='softmax'))
+dmlp_mse.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=0.0001),metrics=['accuracy'])
+hist_mse = dmlp_mse.fit(x_train, y_train, batch_size=128, epochs=30, validation_data=(x_test, y_test),verbose=2)
+
+# 교차 엔트로피를 사용한 모델
+dmlp_ce = Sequential()
+dmlp_ce.add(Dense(units= n_hidden1, activation='tanh', input_shape=(n_input,)))
+dmlp_ce.add(Dense(units= n_hidden2, activation='tanh'))
+dmlp_ce.add(Dense(units= n_hidden3, activation='tanh'))
+dmlp_ce.add(Dense(units= n_hidden4, activation='tanh'))
+dmlp_ce.add(Dense(units= n_output, activation='softmax'))
+dmlp_ce.compile(loss='categorical_crossentropy', optimizer=Adam(learning_rate=0.0001),metrics=['accuracy'])
+hist_ce = dmlp_ce.fit(x_train, y_train, batch_size=128, epochs=30, validation_data=(x_test, y_test),verbose=2)
+
+# 두 모델의 정확률 비교
+res_mse= dmlp_mse.evaluate(x_test, y_test, verbose=0)
+print("평균제곱오차의 정확률은", res_mse[1]*100)
+res_ce= dmlp_ce.evaluate(x_test, y_test, verbose=0)
+print("교차엔트로피의 정확률은", res_ce[1]*100)
+
+#하나의 그래프에서 두 모델을 비교
+import matplotlib.pyplot as plt
+plt.plot(hist_mse.history['accuracy'])
+plt.plot(hist_mse.history['val_accuracy'])
+plt.plot(hist_ce.history['accuracy'])
+plt.plot(hist_ce.history['val_accuracy'])
+plt.title('Model accurcay comparison between MSE and cross entropy_2270005_KJH')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train_mse', 'Validation_mse', 'Train_ce'], loc='best')
+plt.grid()
+plt.show()
+
+# 9월 23일 - 딥러닝 4주차
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# CIFAR 읽어 와서 신경망에 입력할 형태로 변환
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+x_train = x_train.astype(np.float32)/255.0
+x_test = x_test.astype(np.float32)/255.0
+y_train = tf.keras.utils.to_categorical(y_train,10)
+y_test = tf.keras.utils.to_categorical(y_test,10)
+
+# 신경망 모델 설계
+cnn = Sequential()
+cnn.add(Conv2D(32,(3,3), activation='relu', input_shape=(32,32,3)))
+cnn.add(Conv2D(32,(3,3), activation='relu'))
+cnn.add(MaxPooling2D(pool_size=(2,2)))
+cnn.add(Dropout(0.25))
+cnn.add(Conv2D(64,(3,3), activation='relu'))
+cnn.add(Conv2D(64,(3,3), activation='relu'))
+cnn.add(MaxPooling2D(pool_size=(2,2)))
+cnn.add(Dropout(0.25))
+cnn.add(Flatten())
+cnn.add(Dense(512, activation='relu'))
+cnn.add(Dropout(0.5))
+cnn.add(Dense(10, activation='softmax'))
+
+# 신경망 모델 학습(영상 증대기 활용)
+cnn.compile(loss='categorical_crossentropy', optimizer=Adam(),metrics=['accuracy'])
+batch_size=128
+generator= ImageDataGenerator(width_shift_range=0.1, height_shift_range=0.1, horizontal_flip=True)
+hist = cnn.fit(x_train, y_train, batch_size=batch_size, epochs=50, validation_data=(x_test, y_test),verbose=2)
+
+# 신경망 모델의 정확률 평가
+res_mse= cnn.evaluate(x_test, y_test, verbose=0)
+print("정확률은", res_mse[1]*100)
+
+import matplotlib.pyplot as plt
+plt.plot(hist.history['accuracy'])
+plt.plot(hist.history['val_accuracy'])
+plt.title('Model accurcay_2270005_KJH')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='best')
+plt.grid()
+plt.show()
+
+# 9월 30일 -딥러닝 5주차 오류
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Flatten, Dense
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications.resnet50 import ResNet50,preprocess_input
+from tensorflow.keras.preprocessing import image
+import os
+
+train_folder='CUB200/train'
+test_folder='CUB200/test'
+
+class_reduce=0.1
+no_class=int(len(os.listdir(train_folder))*class_reduce)
+
+x_train,y_train=[],[]
+for i, class_name in enumerate(os.listdir(train_folder)):
+    if i <no_class:
+        for fname in os.listdir(train_folder+'/'+class_name):
+            img=image.load_img(train_folder+'/'+class_name+'/'+fname, target_size=(224,224))
+            if len(img.getbands())!=3:
+                print("주의: 유효하지 않은 영상 발생", class_name, fname)
+                continue
+            x=image.img_to_array(img)
+            x=preprocess_input(x)
+            x_train.append(x)
+            y_train.append(i)
+      
+x_test, y_test=[],[]
+for i, class_name in enumerate(os.listdir(test_folder)):
+    if i <no_class:
+        for fname in os.listdir(test_folder+'/'+class_name):
+            img=image.load_img(test_folder+'/'+class_name+'/'+fname, target_size=(224,224))
+            if len(img.getbands())!=3:
+                print("주의: 유효하지 않은 영상 발생", class_name, fname)
+                continue
+            x=image.img_to_array(img)
+            x=preprocess_input(x)
+            x_test.append(x)
+            y_test.append(i)
+
+x_train=np.asarray(x_train)
+y_train=np.asarray(y_train)
+x_test=np.asarray(x_test)
+y_test=np.asarray(y_test)
+y_train= tf.keras.utils.to_categorical(y_train, no_class)
+y_test= tf.keras.utils.to_categorical(y_test, no_class)
+
+base_model=ResNet50(weights='imagenet', include_top=False, input_shape=(224,224,3))
+cnn = Sequential()
+cnn.add(base_model)
+cnn.add(Flatten())
+cnn.add(Dense(1024, activation='relu'))
+cnn.add(Dense(no_class, activation='softmax'))
+
+cnn.compile(loss='categorical_crossentropy', optimizer=Adam(0.00002),metrics=['accuracy'])
+hist = cnn.fit(x_train, y_train, batch_size=16, epochs=10, validation_data=(x_test, y_test),verbose=1)
+
+res= cnn.evaluate(x_test, y_test, verbose=0)
+print("정확률은", res[1]*100, "2270005_KJH")
+
+# 10월 7일 -딥러닝 6주차
+import numpy as np
+import cv2
+
+classes = []
+f =open('coco.names.txt', 'r')
+classes = [line.strip() for line in f.readlines()]
+colors = np.random.uniform(0,255,size=(len(classes),3))
+
+img = cv2.imread('yolo_test2.jpg')
+height, width, channels = img.shape
+blob = cv2.dnn.blobFromImage(img, 1.0/256, (448,448),(0,0,0),swapRB=True, crop=False)
+
+yolo_model=cv2.dnn.readNet('./yolov3.weights', './yolov3.cfg')
+layer_names = yolo_model.getLayerNames()
+out_layers = [layer_names[i-1] for i in yolo_model.getUnconnectedOutLayers()]
+yolo_model.setInput(blob)
+output3 = yolo_model.forward(out_layers)
+
+class_ids, confidences, boxes=[],[],[]
+for output in output3:
+    for vec85 in output:
+        scores = vec85[5:]
+        class_id = np.argmax(scores)
+        confidence = scores[class_id]
+        if confidence>0.5:
+            centerx, centery = int(vec85[0]*width),int(vec85[1]*height)
+            w,h = int(vec85[2]*width), int(vec85[3]*height)
+            x,y = int(centerx-w/2),int(centery-h/2)
+            boxes.append([x,y,w,h])
+            confidences.append(float(confidence))
+            class_ids.append(class_id)
+            
+indexes=cv2.dnn.NMSBoxes(boxes,confidences,0.5,0.4)
+
+for i in range(len(boxes)):
+    if i in indexes:
+        x,y,w,h = boxes[i]
+        text = str(classes[class_ids[i]])+'%.3f'%confidences[i]
+        cv2.rectangle(img,(x,y),(x+w,y+h),colors[class_ids[i]],2)
+        cv2.putText(img,text,(x,y+30),cv2.FONT_HERSHEY_PLAIN,2,colors[class_ids[i]],2)
+            
+cv2.imshow("2270005_KJH", img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# 10월 14일 -딥러닝 7주차
+import numpy as np
+import tensorflow as tf
+from PIL import Image
+import os 
+ 
+cnn = tf.keras.models.load_model('my_cnn_for_deploy.h5') 
+ 
+class_names =['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'flog', 'horse', 'ship', 'truck'] 
+ 
+x_test=[]
+img_orig=[]
+fname=[]
+for filename in os.listdir('./test_images'):
+   if 'jpg' not in filename:
+       continue
+   img=Image.open('./test_images/'+filename)
+   img_orig.append(img)
+   fname.append(filename)
+   x=np.asarray(img.resize([32,32]))/255.0
+   x_test.append(x)
+x_test=np.asarray(x_test) 
+ 
+pred = cnn.predict(x_test) 
+ 
+os.chdir('./test_images')
+if not os.path.isdir('class_buckets'):
+   os.mkdir('class_buckets')
+os.chdir('class_buckets')
+for i in range(len(class_names)):
+   if not os.path.isdir(class_names[i]):
+       os.mkdir(class_names[i]) 
+ 
+for i in range(len(x_test)):
+   folder_name=class_names[np.argmax(pred[i])]
+   os.chdir(folder_name)
+   img_orig[i].save(fname[i])
+   os.chdir('..')
+
+###############################################################################################################################################
+
+import numpy as np
+import tensorflow as tf
+from PIL import Image
+import os 
+ 
+cnn = tf.keras.models.load_model('my_cnn_for_deploy.h5') 
+ 
+class_names =['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'flog', 'horse', 'ship', 'truck'] 
+ 
+x_test=[]
+for filename in os.listdir('./test_images'):
+   if 'jpg' not in filename:
+       continue
+   img=Image.open('./test_images/'+filename)
+   x=np.asarray(img.resize([32,32]))/255.0
+   x_test.append(x)
+x_test=np.asarray(x_test) 
+ 
+pred = cnn.predict(x_test) 
+ 
+import matplotlib.pyplot as plt 
+ 
+n = len(x_test)
+plt.figure(figsize=(18,4)) 
+ 
+for i in range(n):
+   plt.subplot(2, n, i+1)
+   plt.imshow(x_test[i])
+   plt.xticks([]);plt.yticks([])
+   plt.subplot(2, n, n+i+1)
+   if i==0:
+       plt.barh(class_names, pred[i])
+   else:
+       plt.barh(['a', 'A', 'b', 'c', 'd', 'D', 'f', 'h', 's', 't'], pred[i])
+   plt.xticks([])
