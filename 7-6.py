@@ -9,7 +9,7 @@ colors=np.random.uniform(0,255,size=(len(classes),3))
 
 yolo_model=cv2.dnn.readNet('yolov3.weights','yolov3.cfg') # 욜로 읽어오기
 layer_names=yolo_model.getLayerNames()
-out_layers=[layer_names[i-1] for i in yolo_model.getUnconnectedOutLayers()]
+out_layers=[layer_names[i[0]-1] for i in yolo_model.getUnconnectedOutLayers()]
 
 def process_video(): # 비디오에서 침입자 검출해 알리기
     video=cv2.VideoCapture(0)
