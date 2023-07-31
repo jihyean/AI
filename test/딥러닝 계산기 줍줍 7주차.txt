@@ -1,0 +1,75 @@
+'''
+a = 1
+b = 10.1234
+c = a+b
+print(c)
+'''
+'''
+bContidion = 10 > 50
+if bContidion :
+    print('true')
+else:
+    print('False')
+'''
+'''
+for x in [1,2,3,4,5]:
+for x in range(1, 100+1, 1): 
+    if (x % 2) ==0:#even
+        print('left')
+    else:
+        print('right')
+'''
+'''
+bStart = True
+nCount = 0
+while bStart:
+    print('while...ing')
+    if nCount > 10:
+        bStart = False
+    nCount = nCount+1
+'''
+'''
+for dan in range(2,5+1,1):
+    for line in range(1,3+1,1):
+        print('%d  x %d = %d' % (dan, line, dan*line))
+
+    
+'''
+'''
+def gugudan(dan_start, dan_finsh, lines)
+    for line in range(1,3+1,1):
+        strMsg=''
+        for dan in range(2,5+1,1):
+            strMsg = strMsg+'%d X %d = %d\t' % (dan, line, dan*line)
+        print(strMsg)
+'''
+'''
+for dan in range (1, 5):
+    strMsg=''
+    for line in range(1, 10):
+        strMsg = strMsg+'%d X %d = %d\t' % (dan, line, dan*line)
+        print(strMsg)
+
+for dan in range (2, 5+1, 1):
+    for line in range(1, 9+1, 1):
+        print('%d X %d = %d\t' % (dan, line, dan*line))
+
+'''
+
+print('for---calc')
+def calc(a,b,strOP):
+    #a,b - value
+    #strOP - '+', '-', '*', '/'
+    ret = 0
+   
+    if strOP == '+': ret = a+b
+    if strOP == '-': ret = a-b
+    if strOP == '*': ret = a*b
+    if strOP == '/': ret = a/b
+    
+    return ret
+
+print(calc(10,20,'+'))
+print(calc(30,10,"-"))
+print(calc(5,10,"*"))
+print(calc(30,6,"/"))

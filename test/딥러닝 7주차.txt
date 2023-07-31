@@ -1,0 +1,90 @@
+#bool
+hungry = True
+sleepy = False
+print(type(hungry))
+#print(not hungry)
+hungry = not hungry
+
+#if
+hungry = True
+if hungry (
+
+#for
+for x in range(1,5+1,1)
+    print(x)
+for x in [1,2,3,4,5]
+    print(x)
+
+#function
+def hello animal(name):
+    print("hello" + name + "my animal")
+
+'''
+#bool
+hungry = True
+sleepy = False
+print(type(hungry))
+#print(not hungry)
+hungry = not hungry
+
+#if
+hungry = True
+if hungry (
+
+#for
+for x in range(1,5+1,1)
+    print(x)
+for x in [1,2,3,4,5]
+    print(x)
+
+#function
+def hello animal(name):
+    print("hello" + name + "my animal")
+
+hello_animal("몰리~~~~~~~~~~")
+
+#계산기 dict..출력
+#구구단 ...가로...세로  출력
+
+a = [1,2,3,4,5]
+print(a)#[1,2,3,4,5]
+print(type(a))#<class 'list'>
+
+print(a[1:])#[2,3,4,5]
+print(a[:3])#[1,2,3]
+print(a[:-1])#[1,2,3,4]
+print(a[:-2])#[1,2,3]
+print(a[0])
+print(a[4])
+#print(a[5])#error....list index out of range
+
+#dict
+a = { 'height':180} #dictionary ctor
+print(a)#{'hegiht': 180}
+print(type(a))#<class 'dict'>
+a = ['hegiht'] =185
+print(a['hegiht'])#185
+
+a['wegiht'] = 80
+print(a)
+'''
+def calc(a, b, op):
+    result = { '+':a+b,
+               '-':a-b,
+               '*':a*b,
+               '/':a/b}
+    return result[op]
+
+print(calc(10,20,'+'))
+print(calc(10,20,'-'))
+print(calc(10,20,'*'))
+print(calc(10,20,'/'))
+
+def gugudan(dan_start, dan_finish, lines):
+    for line in range(1,lines+1,1):
+        str=''
+        for dan in range (dan_start, dan_finish+1,1):
+            str = str+"%dx%d=%d\t"%(dan, line, dan*line)
+        print(str)
+gugudan(2,5,2)
+gugudan(7,10,4)
