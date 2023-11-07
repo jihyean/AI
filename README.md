@@ -1,4 +1,14 @@
 # AI
+<hr>
+
+## 환경
+conda create -n aip python=3.7.0
+conda activate aip
+conda install spyder=4.0.0
+python -m pip install --upgrade pip
+pip install tensorflow
+pip install matplotlib==3.2.2
+pip install opencv-python
 
 ## 실행화면
 <img width="960" alt="딥러닝7" src="https://user-images.githubusercontent.com/80264075/236664281-f3045fdf-91df-4d67-8f84-71d3101ab506.png">
